@@ -28,14 +28,14 @@ const Navbar = () => {
                             <li><NavLink to='/'>Add Task</NavLink></li>
                             <li><NavLink to='/'>My Task</NavLink></li>
                             <li><NavLink to='/'>Completed Task</NavLink></li>
-                            <li><NavLink to='/'>Log In</NavLink></li>
+                            <li><NavLink to='/login'>Log In</NavLink></li>
 
                         </ul>
                     </div>
 
 
                     {/* This div is for navigation bar toggle bars.  */}
-                    <div className='lg:hidden mt-5 w-[70%] flex justify-end mr-10 text-green-600 select-none'>
+                    <div className='lg:hidden mt-5 w-[70%] flex justify-end mr-10 text-white select-none'>
                         {
                             isOpen ? <ImCross onClick={() => setIsOpen(false)} className='text-2xl cursor-pointer '></ImCross>
                                 :
@@ -48,13 +48,13 @@ const Navbar = () => {
 
             {/* This Navlinks for small display. these navlinks will show in small devices and after clicking the green bar and will be disappeared after clicking the cross sign */}
 
-            <div className={`lg:hidden w-full mt-[80px] absolute ${isOpen ? `top-0` : `top-[-500px]`} duration-500`}>
+            <div className={`lg:hidden w-full mt-[80px] absolute ${isOpen ? `top-0` : `top-[-500px]`} duration-500 z-10`}>
                 <ul className='text-white font-bold '>
-                    <li className='bg-green-600 block mb-[1px] p-5'><NavLink to='/'>Home</NavLink></li>
-                    <li className='bg-green-600 w-full mb-[1px] p-5'><NavLink to='/'>Add Task</NavLink></li>
-                    <li className='bg-green-600 w-full mb-[1px] p-5'><NavLink to='/'>My Task</NavLink></li>
-                    <li className='bg-green-600 w-full mb-[1px] p-5'><NavLink to='/'>Completed Task</NavLink></li>
-                    <li className='bg-green-600 w-full mb-[1px] p-5'><NavLink to='/'>Log In</NavLink></li>
+                    <li className=' bg-blue-700 block p-5'><NavLink to='/'>Home</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>Add Task</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>My Task</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>Completed Task</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>Log In</NavLink></li>
 
                 </ul>
             </div>
