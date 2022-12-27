@@ -11,7 +11,6 @@ function App() {
 
   //this context api for get the dark mode true or false.
   const { isDarkMode } = useContext(DarkLightTheme);
-  console.log(isDarkMode);
   return (
     <div id='mainApp' style={{ background: `url('${isDarkMode ? darkImg : lightImg}') no-repeat center center fixed` }}>
       <ToastContainer

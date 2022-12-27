@@ -4,7 +4,7 @@ import { FiAlignJustify } from "react-icons/fi";
 import { ImCross } from "react-icons/im";
 import DarkModeToggle from "react-dark-mode-toggle";
 import { DarkLightTheme } from '../../../contexts/ThemeContext';
-
+import './Navbar.scss';
 
 const Navbar = () => {
     const { isDarkMode, setIsDarkMode } = useContext(DarkLightTheme);
@@ -29,10 +29,12 @@ const Navbar = () => {
                     {/* Navlinks for large display*/}
                     <div className='hidden lg:block lg:w-[70%] mt-5 lg:ml-40 mr-0'>
                         <ul className='lg:flex justify-around w-[90%] align-middle mx-auto text-xl text-white font-bold'>
-                            <li><NavLink to='/'>Home</NavLink></li>
-                            <li><NavLink to='/'>Add Task</NavLink></li>
-                            <li><NavLink to='/'>My Task</NavLink></li>
-                            <li><NavLink to='/'>Completed Task</NavLink></li>
+                            <li><NavLink className={({ isActive }) =>
+                                isActive ? 'active' : undefined
+                            } to='/'>Home</NavLink></li>
+                            <li><NavLink to='/addTask'>Add Task</NavLink></li>
+                            <li><NavLink to='/myTask'>My Task</NavLink></li>
+                            <li><NavLink to='/completedTask'>Completed Task</NavLink></li>
                             <li><NavLink to='/login'>Log In</NavLink></li>
                             <li>
                                 <DarkModeToggle
@@ -63,10 +65,15 @@ const Navbar = () => {
             <div className={`lg:hidden w-full mt-[80px] absolute ${isOpen ? `top-0` : `top-[-500px]`} duration-500 z-10`}>
                 <ul className='text-white font-bold '>
                     <li className=' bg-blue-700 block p-5'><NavLink to='/'>Home</NavLink></li>
-                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>Add Task</NavLink></li>
-                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>My Task</NavLink></li>
-                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>Completed Task</NavLink></li>
-                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/'>Log In</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/addTask'>Add Task</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/myTask'>My Task</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/completedTask'>Completed Task</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/logIn'>Log In</NavLink></li>
+                    <li className=' bg-blue-700 w-full p-5'> <DarkModeToggle
+                        onChange={setIsDarkMode}
+                        checked={isDarkMode}
+                        size={50}
+                    /></li>
 
                 </ul>
             </div>
