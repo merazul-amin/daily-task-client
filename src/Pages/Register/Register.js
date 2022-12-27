@@ -6,6 +6,7 @@ import {
     useNavigate,
     useLocation
 } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 
 
@@ -27,6 +28,7 @@ const Register = () => {
                 // Signed in 
                 const user = userCredential.user;
                 form.reset();
+                toast.success('Successfully User Created.');
                 navigate(from, { replace: true });
             })
             .catch((error) => {
@@ -42,7 +44,7 @@ const Register = () => {
 
                 // The signed-in user info.
                 const user = result.user;
-
+                toast.success('User Created');
                 navigate(from, { replace: true });
                 // ...
             }).catch((error) => {

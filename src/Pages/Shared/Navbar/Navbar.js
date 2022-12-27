@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FiAlignJustify } from "react-icons/fi";
 import { ImCross } from "react-icons/im";
+import DarkModeToggle from "react-dark-mode-toggle";
+import { DarkLightTheme } from '../../../contexts/ThemeContext';
+
+
 const Navbar = () => {
+    const { isDarkMode, setIsDarkMode } = useContext(DarkLightTheme);
     const [isOpen, setIsOpen] = useState(false);
     return (
         <>
@@ -29,6 +34,13 @@ const Navbar = () => {
                             <li><NavLink to='/'>My Task</NavLink></li>
                             <li><NavLink to='/'>Completed Task</NavLink></li>
                             <li><NavLink to='/login'>Log In</NavLink></li>
+                            <li>
+                                <DarkModeToggle
+                                    onChange={setIsDarkMode}
+                                    checked={isDarkMode}
+                                    size={50}
+                                />
+                            </li>
 
                         </ul>
                     </div>
