@@ -1,14 +1,51 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logImg from '../../assets/register.png';
+import { AuthContext } from '../../contexts/UserContext';
+import {
+    useNavigate,
+    useLocation
+} from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const LogIn = () => {
+    const { googleLogin, logIn } = useContext(AuthContext);
+
+    let navigate = useNavigate();
+    let location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Clicked');
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        logIn(email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                form.reset();
+                toast.success('Successfully Logged In.')
+                navigate(from, { replace: true });
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
     };
+
     const handleGoogleLogin = () => {
-        console.log('Clicked');
+        googleLogin()
+            .then((result) => {
+                // The signed-in user info.
+                const user = result.user;
+                navigate(from, { replace: true });
+                // ...
+            }).catch((error) => {
+                // Handle Errors here.
+                console.log(error);
+                // ...
+            });
     }
     return (
         <div className="overflow-hidden bg-gray-900 bg-opacity-60">
@@ -49,7 +86,7 @@ const LogIn = () => {
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-1 sm:mb-2">
                                         <label
-                                            htmlFor="name"
+                                            htmlFor="email"
                                             className="inline-block mb-1 font-medium"
                                         >
                                             Email
@@ -59,13 +96,13 @@ const LogIn = () => {
                                             required
                                             type="email"
                                             className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                                            id="name"
-                                            name="name"
+                                            id="email"
+                                            name="email"
                                         />
                                     </div>
                                     <div className="mb-1 sm:mb-2">
                                         <label
-                                            htmlFor="email"
+                                            htmlFor="password"
                                             className="inline-block mb-1 font-medium"
                                         >
                                             Password
@@ -75,14 +112,14 @@ const LogIn = () => {
                                             required
                                             type="password"
                                             className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                                            id="email"
-                                            name="email"
+                                            id="password"
+                                            name="password"
                                         />
                                         <p>New here? <Link className='text-blue-600 underline' to='/register'>Register</Link></p>
                                     </div>
 
                                     <div className="mt-4 mb-2 sm:mb-4">
-                                        <button type="submit" class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full  dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2">
+                                        <button type="submit" className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full  dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2">
                                             Log In
                                         </button>
 
@@ -91,8 +128,8 @@ const LogIn = () => {
                                 </form>
 
                                 <div>
-                                    <button onClick={handleGoogleLogin} type="button" class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg w-full text-sm px-5 py-2.5 text-center inline-flex justify-center dark:focus:ring-[#4285F4]/55 mr-2 mt-0 mb-2">
-                                        <svg class="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>
+                                    <button onClick={handleGoogleLogin} type="button" className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg w-full text-sm px-5 py-2.5 text-center inline-flex justify-center dark:focus:ring-[#4285F4]/55 mr-2 mt-0 mb-2">
+                                        <svg className="mr-2 -ml-1 w-4 h-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>
                                         Sign in with Google
                                     </button>
                                 </div>
