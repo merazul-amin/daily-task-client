@@ -1,22 +1,55 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import addTask from '../../../assets/Work in progress-rafiki.png';
 import { AuthContext } from '../../../contexts/UserContext';
-
 const HomeAddTask = () => {
+    const navigate = useNavigate();
     const { user } = useContext(AuthContext);
-    console.log(user);
+
+
 
     const handleKeyDown = (e) => {
+
+
+
         if (e.key === 'Enter') {
+            if (!user?.email) {
+                navigate('/logIn')
+                return toast.error('Please LogIn first.')
+            }
             const taskName = e.target.value;
-            console.log(taskName);
+            const taskDetails = {
+                taskName,
+                userName: user?.email
+            }
+            fetch('http://localhost:5000/user-task', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(taskDetails)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(err => console.log(err))
+
+
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const taskName = e.target.task.value;
-        console.log(taskName);
+
+        if (!user?.email) {
+            navigate('/logIn')
+            return toast.error('Please LogIn first.')
+        }
+
+
     }
     return (
         <div className='w-[90%] mx-auto'>
