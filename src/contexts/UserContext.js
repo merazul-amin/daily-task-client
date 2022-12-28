@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import app from '../firebase/firebase.init';
 import { GoogleAuthProvider } from "firebase/auth";
-
+import { toast } from 'react-toastify';
 
 const provider = new GoogleAuthProvider();
 export const AuthContext = createContext();
@@ -22,6 +22,14 @@ const UserContext = ({ children }) => {
     const googleLogin = () => {
         return signInWithPopup(auth, provider);
     }
+    const logOut = () => {
+        signOut(auth)
+            .then(() => {
+                toast.success('Logged Out.')
+            }).catch((error) => {
+                // An error happened.
+            });
+    }
 
 
     useEffect(() => {
@@ -29,14 +37,17 @@ const UserContext = ({ children }) => {
             setUser(loggedUser);
         })
 
-        return unsubscribe();
+        return () => {
+            unsubscribe();
+        }
     }, [])
 
     const userInfo = {
         user,
         createUser,
         googleLogin,
-        logIn
+        logIn,
+        logOut
     }
     return (
         <AuthContext.Provider value={userInfo}>

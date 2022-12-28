@@ -5,12 +5,19 @@ import { ImCross } from "react-icons/im";
 import DarkModeToggle from "react-dark-mode-toggle";
 import { DarkLightTheme } from '../../../contexts/ThemeContext';
 import './Navbar.scss';
-
+import { AuthContext } from '../../../contexts/UserContext';
+import { HiUser } from "react-icons/hi";
+import Profile from '../Profile/Profile';
 const Navbar = () => {
+    const { user } = useContext(AuthContext);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     const { isDarkMode, setIsDarkMode } = useContext(DarkLightTheme);
     const [isOpen, setIsOpen] = useState(false);
+
+    //this is for suddenly logout set profile open false
+
     return (
-        <>
+        <div className='relative'>
             <div className='shadow-lg '>
                 <div className='lg:w-[90%] mx-auto h-[80px] flex align-middle relative'>
                     {/* two div for logo and nav links */}
@@ -35,7 +42,15 @@ const Navbar = () => {
                             <li><NavLink to='/addTask'>Add Task</NavLink></li>
                             <li><NavLink to='/myTask'>My Task</NavLink></li>
                             <li><NavLink to='/completedTask'>Completed Task</NavLink></li>
-                            <li><NavLink to='/login'>Log In</NavLink></li>
+                            {
+                                user?.email ?
+                                    <HiUser
+                                        onClick={() => setIsProfileOpen(!isProfileOpen)} className='text-3xl cursor-pointer'>
+
+                                    </HiUser>
+                                    :
+                                    <li><NavLink to='/login'>Log In</NavLink></li>
+                            }
                             <li>
                                 <DarkModeToggle
                                     onChange={setIsDarkMode}
@@ -68,17 +83,29 @@ const Navbar = () => {
                     <li className=' bg-blue-700 w-full p-5'><NavLink to='/addTask'>Add Task</NavLink></li>
                     <li className=' bg-blue-700 w-full p-5'><NavLink to='/myTask'>My Task</NavLink></li>
                     <li className=' bg-blue-700 w-full p-5'><NavLink to='/completedTask'>Completed Task</NavLink></li>
-                    <li className=' bg-blue-700 w-full p-5'><NavLink to='/logIn'>Log In</NavLink></li>
-                    <li className=' bg-blue-700 w-full p-5'> <DarkModeToggle
+                    {
+                        user?.email ?
+                            <h1
+                                onClick={() => setIsProfileOpen(!isProfileOpen)} className='text-xl bg-blue-700 cursor-pointer  w-full p-5'>
+                                Profile
+                            </h1>
+                            :
+                            <li><NavLink className='bg-blue-700 w-full p-5' to='/login'>Log In</NavLink></li>
+                    }
+                    <li className='bg-blue-700 w-full p-5'> <DarkModeToggle
                         onChange={setIsDarkMode}
                         checked={isDarkMode}
                         size={50}
                     /></li>
 
                 </ul>
+
             </div>
-        </>
-    );
+            <div className='absolute top-[80px] right-[40px] z-50'>
+                {isProfileOpen ? <Profile setIsProfileOpen={setIsProfileOpen}></Profile> : ''}
+            </div>
+        </div>
+    )
 };
 
 export default Navbar;
