@@ -5,15 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import UserContext from './contexts/UserContext';
 import ThemeContext from './contexts/ThemeContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const queryClient = new QueryClient();
+
 root.render(
   <React.StrictMode>
-    <ThemeContext>
-      <UserContext>
-        <App />
-      </UserContext>
-    </ThemeContext>
+    <QueryClientProvider client={queryClient}>
+      <ThemeContext>
+        <UserContext>
+          <App />
+        </UserContext>
+      </ThemeContext>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
