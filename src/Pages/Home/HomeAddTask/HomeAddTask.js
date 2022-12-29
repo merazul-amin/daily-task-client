@@ -8,10 +8,35 @@ const HomeAddTask = () => {
     const { user } = useContext(AuthContext);
 
 
+    //function for add task in db 
+
+    const addToDb = (task) => {
+        const taskDetails = {
+            taskName: task,
+            userEmail: user?.email,
+            isComplete: false
+        }
+        fetch('http://localhost:5000/user-task', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(taskDetails)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    toast.success('Task added.')
+                    navigate('/myTask');
+                }
+            })
+            .catch(err => console.log(err))
+
+    }
+
+
 
     const handleKeyDown = (e) => {
-
-
 
         if (e.key === 'Enter') {
             if (!user?.email) {
@@ -19,23 +44,7 @@ const HomeAddTask = () => {
                 return toast.error('Please LogIn first.')
             }
             const taskName = e.target.value;
-            const taskDetails = {
-                taskName,
-                userName: user?.email
-            }
-            fetch('http://localhost:5000/user-task', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(taskDetails)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(err => console.log(err))
-
+            addToDb(taskName);
 
         }
     }
@@ -48,7 +57,7 @@ const HomeAddTask = () => {
             navigate('/logIn')
             return toast.error('Please LogIn first.')
         }
-
+        addToDb(taskName);
 
     }
     return (
