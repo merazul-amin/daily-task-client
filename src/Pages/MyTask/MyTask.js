@@ -29,8 +29,18 @@ const MyTask = () => {
     }
 
     const handleComplete = (id) => {
-        console.log(id);
+        fetch(`http://localhost:5000/userTasks/${id}`,
+            { method: 'PATCH' }
+        ).then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    toast.success('Task Completed.')
+                    refetch();
+                }
+            })
+            .catch(err => console.log(err))
     }
+
     return (
         <div className='w-[90%] mx-auto mb-60'>
             <h1 className='text-4xl text-white text-center my-5'>My Tasks</h1>
@@ -68,7 +78,9 @@ const MyTask = () => {
                                     <button onClick={() => handleDelete(task._id)} type="button" className="py-2 px-3 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button>
                                 </td>
                                 <td className="py-4 px-6 text-right">
-                                    <button onClick={() => handleComplete(task._id)} type="button" className="py-2 px-3 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Complete</button>
+                                    {
+                                        task.isComplete ? 'Completed' : <button onClick={() => handleComplete(task._id)} type="button" className="py-2 px-3 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Complete</button>
+                                    }
                                 </td>
                             </tr>)
                         }
